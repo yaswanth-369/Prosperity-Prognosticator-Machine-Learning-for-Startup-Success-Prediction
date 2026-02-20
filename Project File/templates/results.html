@@ -1,0 +1,480 @@
+<!-- Save this as templates/results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Results - Prosperity Prognosticator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #ffffff;
+            color: #333333;
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid #cccccc;
+            margin-bottom: 30px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333333;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .nav-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #ffffff;
+            color: #333333;
+            text-decoration: none;
+            border-radius: 25px;
+            border: 2px solid #333333;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: #333333;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        
+        .main-content {
+            padding: 20px 0;
+        }
+        
+        .result-hero {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .result-hero h1 {
+            font-size: 2.8rem;
+            color: #333333;
+            margin-bottom: 15px;
+        }
+        
+        .result-hero p {
+            font-size: 1.2rem;
+            color: #666666;
+        }
+        
+        .prediction-card {
+            background: #ffffff;
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid #cccccc;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .success-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .success-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        .success-true {
+            color: #228b22;
+        }
+        
+        .success-false {
+            color: #cc0000;
+        }
+        
+        .probability-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .probability-card {
+            background: #f5f5f5;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid #dddddd;
+            transition: all 0.3s ease;
+        }
+        
+        .probability-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .probability-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .probability-label {
+            font-size: 1.2rem;
+            color: #666666;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #228b22, #32cd32);
+            border-radius: 5px;
+            transition: width 2s ease-in-out;
+        }
+        
+        .input-summary {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #cccccc;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .input-summary h3 {
+            color: #333333;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .input-item {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #dddddd;
+        }
+        
+        .input-label {
+            font-size: 0.9rem;
+            color: #666666;
+            margin-bottom: 5px;
+        }
+        
+        .input-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333333;
+        }
+        
+        .insights-section {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #cccccc;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .insights-section h3 {
+            color: #333333;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .insight-item {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #228b22;
+        }
+        
+        .insight-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        
+        .error-message {
+            background: #ffebee;
+            border: 1px solid #ffcdd2;
+            color: #cc0000;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .action-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .primary-btn {
+            background: #333333;
+            color: #ffffff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .secondary-btn {
+            background: #ffffff;
+            color: #333333;
+            border: 2px solid #333333;
+        }
+        
+        .secondary-btn:hover {
+            background: #333333;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .result-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .success-icon {
+                font-size: 3rem;
+            }
+            
+            .success-text {
+                font-size: 2rem;
+            }
+            
+            .probability-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">🚀 Prosperity Prognosticator</div>
+                <div class="nav-buttons">
+                    <a href="/predict" class="nav-btn">← New Prediction</a>
+                    <a href="/" class="nav-btn">Home</a>
+                </div>
+            </div>
+        </header>
+        
+        <main class="main-content">
+            <div class="result-hero">
+                <h1>AI Prediction Results</h1>
+                <p>Your startup's success analysis is complete</p>
+            </div>
+            
+            {% if error %}
+            <div class="prediction-card">
+                <div class="error-message">
+                    <h2>⚠️ Error</h2>
+                    <p>{{ error }}</p>
+                </div>
+            </div>
+            {% elif result %}
+            <div class="prediction-card">
+                <div class="success-indicator">
+                    {% if result.prediction == 1 %}
+                    <div class="success-icon">🎉</div>
+                    <div class="success-text success-true">HIGH SUCCESS POTENTIAL</div>
+                    {% else %}
+                    <div class="success-icon">⚠️</div>
+                    <div class="success-text success-false">NEEDS IMPROVEMENT</div>
+                    {% endif %}
+                </div>
+                
+                <div class="probability-section">
+                    <div class="probability-card">
+                        <div class="probability-value success-true">{{ result.confidence_success }}%</div>
+                        <div class="probability-label">Success Probability</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ result.confidence_success }}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="probability-card">
+                        <div class="probability-value success-false">{{ result.confidence_failure }}%</div>
+                        <div class="probability-label">Risk Factor</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ result.confidence_failure }}%; background: linear-gradient(90deg, #cc0000, #ff4444);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="insights-section">
+                <h3>🔍 AI Insights & Recommendations</h3>
+                
+                {% if result.confidence_success > 70 %}
+                <div class="insight-item">
+                    <span class="insight-icon">🚀</span>
+                    <strong>Excellent Prospects:</strong> Your startup shows strong indicators for success. The funding patterns and milestone achievements suggest a well-executed growth strategy.
+                </div>
+                {% elif result.confidence_success > 50 %}
+                <div class="insight-item">
+                    <span class="insight-icon">📈</span>
+                    <strong>Moderate Potential:</strong> Your startup has decent prospects but could benefit from accelerating milestone achievements and strengthening key partnerships.
+                </div>
+                {% else %}
+                <div class="insight-item">
+                    <span class="insight-icon">⚡</span>
+                    <strong>Growth Opportunities:</strong> Focus on increasing funding rounds, achieving more milestones, and building stronger tier relationships to improve success probability.
+                </div>
+                {% endif %}
+                
+                {% if result.input_data.funding_total_usd > 1000000 %}
+                <div class="insight-item">
+                    <span class="insight-icon">💰</span>
+                    <strong>Strong Funding:</strong> Your funding level indicates investor confidence and provides a solid foundation for scaling operations.
+                </div>
+                {% endif %}
+                
+                {% if result.input_data.is_top500 >= 1 %}
+                <div class="insight-item">
+                    <span class="insight-icon">🏆</span>
+                    <strong>Top 500 Recognition:</strong> Being in the top 500 significantly boosts your credibility and market position.
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="input-summary">
+                <h3>📊 Input Summary</h3>
+                <div class="input-grid">
+                    <div class="input-item">
+                        <div class="input-label">Startup Age</div>
+                        <div class="input-value">{{ result.input_data.age_startup_year }} years</div>
+                    </div>
+                    <div class="input-item">
+                        <div class="input-label">Total Funding</div>
+                        <div class="input-value">${{ "{:,.0f}".format(result.input_data.funding_total_usd) }}</div>
+                    </div>
+                    <div class="input-item">
+                        <div class="input-label">Milestones</div>
+                        <div class="input-value">{{ result.input_data.milestones }}</div>
+                    </div>
+                    <div class="input-item">
+                        <div class="input-label">Tier Relationships</div>
+                        <div class="input-value">{{ result.input_data.tier_relationships }}/10</div>
+                    </div>
+                    <div class="input-item">
+                        <div class="input-label">Avg Participants</div>
+                        <div class="input-value">{{ result.input_data.avg_participants }}</div>
+                    </div>
+                    <div class="input-item">
+                        <div class="input-label">Top 500 Status</div>
+                        <div class="input-value">{{ "Yes" if result.input_data.is_top500 >= 1 else "No" }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="actions">
+                <a href="/predict" class="action-btn primary-btn">🔮 Make Another Prediction</a>
+                <a href="/adaptivity" class="action-btn secondary-btn">📊 Learn More</a>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Animate progress bars
+        window.addEventListener('load', function() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+        });
+
+        // Hover effects
+        document.querySelectorAll('.probability-card, .insight-item, .input-item').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>

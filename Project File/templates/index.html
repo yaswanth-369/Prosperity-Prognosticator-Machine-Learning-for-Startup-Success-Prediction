@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prosperity Prognosticator - AI-Powered Startup Success Prediction</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #ffffff;
+            color: #333333;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        .matrix-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #f5f5f5;
+            z-index: -1;
+            animation: pulse 4s ease-in-out infinite alternate;
+        }
+        @keyframes pulse { 0% { opacity: 0.5; } 100% { opacity: 0.8; } }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        header {
+            padding: 2rem 0;
+            text-align: center;
+            background: #f5f5f5;
+            border-bottom: 1px solid #cccccc;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #333333;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2)); }
+            to { filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.3)); }
+        }
+
+        .tagline { font-size: 1.2rem; color: #666666; margin-top: 1rem; font-style: italic; }
+
+        .hero { padding: 4rem 0; text-align: center; position: relative; }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333333;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #666666;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: #ffffff;
+            color: #333333;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid #333333;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-button::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.1);
+            transition: left 0.5s;
+        }
+        .cta-button:hover::before { left: 100%; }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            background: #333333;
+            color: #ffffff;
+        }
+
+        .features { padding: 4rem 0; background: #f5f5f5; }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid #dddddd;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0;
+            height: 3px;
+            background: #333333;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover::before { transform: scaleX(1); }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #333333;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon { font-size: 3rem; margin-bottom: 1rem; color: #333333; }
+        .feature-title { font-size: 1.5rem; margin-bottom: 1rem; color: #333333; }
+        .feature-description { color: #666666; line-height: 1.6; }
+
+        .stats { padding: 4rem 0; text-align: center; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item { padding: 1.5rem; }
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label { color: #666666; font-size: 1.1rem; }
+
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            background: #f5f5f5;
+            border-top: 1px solid #cccccc;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        .nav-links a {
+            color: #666666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: #333333; }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 1.2rem; }
+            .logo { font-size: 2rem; }
+        }
+
+        .floating-particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        .top-nav {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    z-index: 1000;
+    display: flex;
+    gap: 20px;
+}
+
+        .nav-link {
+            text-decoration: none;
+            color: #333333;
+            font-weight: bold;
+            background: #ffffff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #333333;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: #333333;
+            color: #ffffff;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    <nav class="top-nav">
+    <a href="/predict" class="nav-link">PREDICT</a>
+    <a href="/adaptivity" class="nav-link">LEARN MORE</a>
+  </nav>
+    <div class="floating-particles" id="particles"></div>
+
+    <header>
+        <div class="container">
+            <h1 class="logo">🚀 Prosperity Prognosticator</h1>
+            <p class="tagline">Machine Learning for Startup Success Prediction</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title">Predict Your Startup's Future</h1>
+                <p class="hero-subtitle">
+                    Harness the power of advanced machine learning to forecast startup success with unprecedented accuracy. 
+                    Our AI analyzes <strong>76</strong> critical factors to give you the insights you need.
+                </p>
+                <a href="/predict" class="cta-button">Start Prediction</a>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: #ffffff;">Why Choose Prosperity Prognosticator?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🧠</div>
+                        <h3 class="feature-title">Advanced AI Model</h3>
+                        <p class="feature-description">
+                            Our Random Forest algorithm analyzes complex patterns in startup data, 
+                            providing highly accurate predictions based on real-world success factors.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3 class="feature-title">Comprehensive Analysis</h3>
+                        <p class="feature-description">
+                            Evaluate <strong>76</strong> key metrics including funding rounds, geographic location, 
+                            industry category, and milestone achievements for complete insights.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3 class="feature-title">Instant Results</h3>
+                        <p class="feature-description">
+                            Get immediate predictions with confidence scores and success probabilities 
+                            to make informed decisions about your startup's future.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="container">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1rem; color: #ffffff;">Trusted by Data</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">76</div>
+                        <div class="stat-label">Key Metrics Analyzed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">Prediction Accuracy</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">1000+</div>
+                        <div class="stat-label">Startups Analyzed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Always Available</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Prosperity Prognosticator. Powered by Machine Learning.</p>
+            <div class="nav-links">
+                <a href="/predict">Predict</a>
+                <a href="/adaptivity">About Model</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 10 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                container.appendChild(particle);
+            }
+        }
+        window.addEventListener('load', createParticles);
+    </script>
+</body>
+</html>
